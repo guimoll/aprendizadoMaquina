@@ -1,3 +1,5 @@
+# Guilherme Moll, Gabriel Ramos, Eduardo brandt
+
 import matUtils
 
 x1 = matUtils.get_float_array_from_file(r'C:\Users\riley\Downloads\datasetFase1.txt', 'x1')
@@ -11,3 +13,4 @@ y3 = matUtils.get_float_array_from_file(r'C:\Users\riley\Downloads\datasetFase1.
 matUtils.representacao(x1, y1, "R1")
 matUtils.representacao(x2, y2, "R2")
 matUtils.representacao(x3, y3, "R3")
+
