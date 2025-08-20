@@ -1,2 +1,5 @@
-x1 = [10;8;13;9;11;14;6;4;12;7;5]
-y1 = [8.04;6.95;7.58;8.81;8.33;9.96;7.24;4.26;10.84;4.82;5.68];
+
+from AnaliseCorrelacaoRegressaoLinear.matUtils import get_float_array_from_file
+
+x1 = get_float_array_from_file(r'C:\Users\riley\Downloads\datasetFase1.txt', 'x1')
+print(f"x1: {x1}")
