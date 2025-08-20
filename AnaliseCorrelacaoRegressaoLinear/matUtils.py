@@ -36,8 +36,17 @@ def ponto_intercepcao(x: list[float], y: list[float]) -> float:
     avg_x = sum(x) / len(x)
     return avg_y - (b1 * avg_x)
 
+def regressao(x: list[float], y: list[float]) -> tuple[float, float]:
+    b1 = coeficiente_angular(x, y)
+    b0 = ponto_intercepcao(x, y)
+    return b0, b1
+
+def correlacao(x: list[float], y: list[float]) -> float:
+    return regressao_linear(x, y)
+
 def print_statements(x: list[float], y: list[float],i) -> None:
-    print(i +": " + str(regressao_linear(x, y)))
-    print("B0: " + str(ponto_intercepcao(x, y)))
-    print("B1: " + str(coeficiente_angular(x, y)))
+    print(i +": " + str(correlacao(x, y)))
+    B1, B2 = regressao(x, y)
+    print("B1: " + str(B1))
+    print("B2: " + str(B2))
     print("--------------------------------------------------")
