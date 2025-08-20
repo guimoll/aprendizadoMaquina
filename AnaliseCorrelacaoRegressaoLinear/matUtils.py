@@ -29,3 +29,15 @@ def get_float_array_from_file(file_path: str, variable_name: str) -> list[float]
                 values_str = line.split('=')[1].strip().strip(';[]')
                 return [float(val) for val in values_str.split(';')]
     raise ValueError(f"Variable '{variable_name}' not found in file.")
+
+def ponto_intercepcao(x: list[float], y: list[float]) -> float:
+    b1 = coeficiente_angular(x, y)
+    avg_y = sum(y) / len(y)
+    avg_x = sum(x) / len(x)
+    return avg_y - (b1 * avg_x)
+
+def print_statements(x: list[float], y: list[float],i) -> None:
+    print(i +": " + str(regressao_linear(x, y)))
+    print("B0: " + str(ponto_intercepcao(x, y)))
+    print("B1: " + str(coeficiente_angular(x, y)))
+    print("--------------------------------------------------")
