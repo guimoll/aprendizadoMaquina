@@ -1,0 +1,31 @@
+import math
+
+
+def regressao_linear(x: list[float], y: list[float]) -> float:
+    avg_x = sum(x) / len(x)
+    avg_y = sum(y) / len(y)
+
+    dividendo = sum((x[i] - avg_x) * (y[i] - avg_y) for i in range(len(x)))
+    divisor = math.sqrt(
+        sum((x[i] - avg_x) ** 2 for i in range(len(x))) *
+        sum((y[i] - avg_y) ** 2 for i in range(len(y)))
+    )
+
+    return dividendo/divisor
+
+def coeficiente_angular(x: list[float], y: list[float]) -> float:
+    avg_x = sum(x) / len(x)
+    avg_y = sum(y) / len(y)
+
+    dividendo = sum((x[i] - avg_x) * (y[i] - avg_y) for i in range(len(x)))
+    divisor = sum((x[i] - avg_x) ** 2 for i in range(len(x)))
+
+    return dividendo / divisor
+
+def get_float_array_from_file(file_path: str, variable_name: str) -> list[float]:
+    with open(file_path, 'r') as file:
+        for line in file:
+            if line.strip().startswith(f"{variable_name} ="):
+                values_str = line.split('=')[1].strip().strip(';[]')
+                return [float(val) for val in values_str.split(';')]
+    raise ValueError(f"Variable '{variable_name}' not found in file.")
