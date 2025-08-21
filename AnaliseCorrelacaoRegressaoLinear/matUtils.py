@@ -46,8 +46,8 @@ def correlacao(x: list[float], y: list[float]) -> float:
 
 def representacao(x: list[float], y: list[float], i) -> None:
     print(i +": " + str(correlacao(x, y)))
-    B1, B2 = regressao(x, y)
+    B0, B1 = regressao(x, y)
+    print("B0: " + str(B0))
     print("B1: " + str(B1))
-    print("B2: " + str(B2))
     demo.plot_dataset(x,y, i)
     print("--------------------------------------------------")
