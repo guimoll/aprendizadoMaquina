@@ -117,3 +117,18 @@ def load_data():
     x = data[:, :2]
     y = data[:, 2]
     return x, y
+
+
+def regressao_multipla_betinha(x: list[list[float]], y: list[float]) -> list[float]:
+    # Add intercept
+    X = [[1.0] + row for row in x]
+    XT = transpose(X)
+    # XTX = XT * X
+    XTX = [[sum(XT[i][k] * X[k][j] for k in range(len(X))) for j in range(len(XT))] for i in range(len(XT))]
+    # XTy = XT * y
+    XTy = [sum(XT[i][k] * y[k] for k in range(len(X))) for i in range(len(XT))]
+    # Inverse
+    XTX_inv = inverse(XTX)
+    # Coefficients: XTX_inv * XTy
+    B = [sum(XTX_inv[i][j] * XTy[j] for j in range(len(XTy))) for i in range(len(XTy))]
+    return B
