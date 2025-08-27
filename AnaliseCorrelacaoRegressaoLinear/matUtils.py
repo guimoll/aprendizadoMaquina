@@ -1,3 +1,4 @@
+import csv
 import math
 import demo
 
@@ -51,3 +52,20 @@ def representacao(x: list[float], y: list[float], i) -> None:
     print("B1: " + str(B1))
     demo.plot_dataset(x,y, i)
     print("--------------------------------------------------")
+
+def regressao_multipla(x: list[list[float]], y: list[float]) -> list[float]:
+    x,y = parse_csv(r'C:\Users\riley\Downloads\datasetFase1.txt')
+    x.describe();
+    y.describe();
+    X = [[1.0] + row for row in x]
+
+def parse_csv(file_path: str):
+    x = []
+    y = []
+    with open(file_path, newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            *features, target = map(float, row)
+            x.append(features)
+            y.append(target)
+    return x, y
