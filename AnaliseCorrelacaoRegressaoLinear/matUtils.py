@@ -1,5 +1,8 @@
 import csv
 import math
+
+import numpy as np
+
 import demo
 
 
@@ -55,9 +58,9 @@ def representacao(x: list[float], y: list[float], i) -> None:
     print("--------------------------------------------------")
 
 def regressao_multipla() -> list[float]:
-    X = [[1.0] + row for row in x]
-
-
+    x,y = load_data()
+    x = np.column_stack((np.ones(x.shape[0]), x))
+    print(x)
 
 def load_data():
     data = [
@@ -109,3 +112,8 @@ def load_data():
         [1852, 4, 2.999e+05],
         [1203, 3, 2.395e+05],
     ]
+
+    data = np.array(data, dtype=float)
+    x = data[:, :2]
+    y = data[:, 2]
+    return x, y
