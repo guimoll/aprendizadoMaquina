@@ -2,6 +2,7 @@ import csv
 import math
 import demo
 
+
 def regressao_linear(x: list[float], y: list[float]) -> float:
     avg_x = sum(x) / len(x)
     avg_y = sum(y) / len(y)
@@ -53,19 +54,58 @@ def representacao(x: list[float], y: list[float], i) -> None:
     demo.plot_dataset(x,y, i)
     print("--------------------------------------------------")
 
-def regressao_multipla(x: list[list[float]], y: list[float]) -> list[float]:
-    x,y = parse_csv(r'C:\Users\riley\Downloads\datasetFase1.txt')
-    x.describe();
-    y.describe();
+def regressao_multipla() -> list[float]:
     X = [[1.0] + row for row in x]
 
-def parse_csv(file_path: str):
-    x = []
-    y = []
-    with open(file_path, newline='') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            *features, target = map(float, row)
-            x.append(features)
-            y.append(target)
-    return x, y
+
+
+def load_data():
+    data = [
+        [2104, 3, 3.999e+05],
+        [1600, 3, 3.299e+05],
+        [2400, 3, 3.690e+05],
+        [1416, 2, 2.320e+05],
+        [3000, 4, 5.399e+05],
+        [1985, 4, 2.999e+05],
+        [1534, 3, 3.149e+05],
+        [1427, 3, 1.990e+05],
+        [1380, 3, 2.120e+05],
+        [1494, 3, 2.425e+05],
+        [1940, 4, 2.400e+05],
+        [2000, 3, 3.470e+05],
+        [1890, 3, 3.300e+05],
+        [4478, 5, 6.999e+05],
+        [1268, 3, 2.599e+05],
+        [2300, 4, 4.499e+05],
+        [1320, 2, 2.999e+05],
+        [1236, 3, 1.999e+05],
+        [2609, 4, 5.000e+05],
+        [3031, 4, 5.990e+05],
+        [1767, 3, 2.529e+05],
+        [1888, 2, 2.550e+05],
+        [1604, 3, 2.429e+05],
+        [1962, 4, 2.599e+05],
+        [3890, 3, 5.739e+05],
+        [1100, 3, 2.499e+05],
+        [1458, 3, 4.645e+05],
+        [2526, 3, 4.690e+05],
+        [2200, 3, 4.750e+05],
+        [2637, 3, 2.999e+05],
+        [1839, 2, 3.499e+05],
+        [1000, 1, 1.699e+05],
+        [2040, 4, 3.149e+05],
+        [3137, 3, 5.799e+05],
+        [1811, 4, 2.859e+05],
+        [1437, 3, 2.499e+05],
+        [1239, 3, 2.299e+05],
+        [2132, 4, 3.450e+05],
+        [4215, 4, 5.490e+05],
+        [2162, 4, 2.870e+05],
+        [1664, 2, 3.685e+05],
+        [2238, 3, 3.299e+05],
+        [2567, 4, 3.140e+05],
+        [1200, 3, 2.990e+05],
+        [852, 2, 1.799e+05],
+        [1852, 4, 2.999e+05],
+        [1203, 3, 2.395e+05],
+    ]
