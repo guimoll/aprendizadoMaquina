@@ -18,4 +18,4 @@ y3 = matUtils.get_float_array_from_file(r'C:\Users\riley\Downloads\datasetFase1.
 #matUtils.representacao(x2, y2, "R2")
 #matUtils.representacao(x3, y3, "R3")
 
-matUtils.regressao_multipla()
+print(matUtils.regressao_multipla())

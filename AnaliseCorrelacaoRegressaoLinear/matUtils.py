@@ -56,11 +56,75 @@ def representacao(x: list[float], y: list[float], i) -> None:
     print("B1: " + str(B1))
     demo.plot_dataset(x,y, i)
     print("--------------------------------------------------")
-
 def regressao_multipla():
-    x,y = load_data()
-    x = np.column_stack((np.ones(x.shape[0]), x))
-    xt = np.transpose(x)
+    x, y = load_data()  # espere que x seja lista de listas e y lista (1D)
+
+    # Garante tipos float e adiciona intercepto
+    X = [[1.0] + [float(v) for v in row] for row in x]
+    y = [float(v) for v in y]
+
+    # Transposta com NumPy (único uso do np), depois converte pra lista pura
+    XT = np.transpose(np.array(X, dtype=float)).tolist()
+
+    # ----------------- utilitários sem numpy -----------------
+    def matmul(A, B):
+        n, m, p = len(A), len(A[0]), len(B[0])
+        # A: n x m, B: m x p
+        return [[sum(A[i][k] * B[k][j] for k in range(m)) for j in range(p)] for i in range(n)]
+
+    def matvec(A, v):
+        n, m = len(A), len(A[0])
+        return [sum(A[i][k] * v[k] for k in range(m)) for i in range(n)]
+
+    def inverse(M):
+        # Gauss-Jordan com pivotamento parcial
+        n = len(M)
+        A = [row[:] for row in M]
+        I = [[1.0 if i == j else 0.0 for j in range(n)] for i in range(n)]
+
+        for col in range(n):
+            # escolhe pivô (maior valor absoluto na coluna 'col' das linhas col..n-1)
+            piv = max(range(col, n), key=lambda r: abs(A[r][col]))
+            if abs(A[piv][col]) < 1e-12:
+                raise ValueError("Matriz (X^T X) é singular ou quase singular.")
+
+            # troca linhas se necessário
+            if piv != col:
+                A[col], A[piv] = A[piv], A[col]
+                I[col], I[piv] = I[piv], I[col]
+
+            # normaliza linha do pivô
+            factor = A[col][col]
+            for j in range(n):
+                A[col][j] /= factor
+                I[col][j] /= factor
+
+            # zera as outras linhas na coluna 'col'
+            for i in range(n):
+                if i == col:
+                    continue
+                f = A[i][col]
+                if f != 0.0:
+                    for j in range(n):
+                        A[i][j] -= f * A[col][j]
+                        I[i][j] -= f * I[col][j]
+
+        return I
+    # ---------------------------------------------------------
+
+    # X^T X e X^T y
+    XTX = matmul(XT, X)
+    XTy = matvec(XT, y)
+
+    # (X^T X)^-1
+    XTX_inv = inverse(XTX)
+
+    # beta = (X^T X)^-1 (X^T y)
+    beta = matvec(XTX_inv, XTy)
+
+    # Desempacota os três primeiros coeficientes
+    b0, b1, b2 = beta[:3]
+    return b0, b1, b2
 
 def load_data():
     data = [
