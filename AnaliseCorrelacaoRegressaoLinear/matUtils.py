@@ -56,6 +56,8 @@ def representacao(x: list[float], y: list[float], i) -> None:
     print("B1: " + str(B1))
     demo.plot_dataset(x,y, i)
     print("--------------------------------------------------")
+
+
 def regressao_multipla():
     x, y = load_data()  # espere que x seja lista de listas e y lista (1D)
 
@@ -178,6 +180,9 @@ def load_data():
     ]
 
     data = np.array(data, dtype=float)
-    x = data[:, :2]
-    y = data[:, 2]
+
+    # separa variáveis independentes (x) e dependente (y)
+    x = data[:, :2].tolist()  # lista de listas [[x1,x2], ...]
+    y = data[:, 2].tolist()  # lista simples [y1, y2, ...]
+
     return x, y
