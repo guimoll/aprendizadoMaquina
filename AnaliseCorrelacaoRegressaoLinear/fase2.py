@@ -23,34 +23,40 @@ import graficos
 #   - Quartos: 5.0
 
 #ITEM C:
-x,y = matUtils.load_data()
-print(matUtils.load_data())
+#x,y = matUtils.load_data()
+#print(matUtils.load_data())
 
 #ITEM D:
 #x,y = matUtils.load_data_quartos_preco()
-#demo.plot_dataset(x, y, "PLOT Numero de quartos e preço")
+#graficos.plot_dataset(x, y, "PLOT Numero de quartos e preço")
 #z,v = matUtils.load_data_tamanho_casa_preco()
-#demo.plot_dataset(z, v, "PLOT Tamanho casa e preço")
+#graficos.plot_dataset(z, v, "PLOT Tamanho casa e preço")
 
 #ITEM E
 #print(matUtils.regressao_multipla())
 #b0,b1,b2 = matUtils.regressao_multipla()
-#demo.plot_regression_3d(b0,b1,b2)
+#graficos.plot_regression_3d(b0,b1,b2)
 # Testar também com a escala normalizada (use_scaling=True)
 
 #Item F,G
 #X, Y = matUtils.load_data_tamanho_casa_preco()
-#demo.plot_dataset_regressao_3d(X, Y, "PLOT 3D Tamanho casa e preço")
+#graficos.plot_dataset_regressao_3d(X, Y, "PLOT 3D Tamanho casa e preço")
 #Z,V = matUtils.load_data_quartos_preco()
-#demo.plot_dataset_regressao_3d(Z, V, "Plot 3D Numero de quartos e preço")
+#graficos.plot_dataset_regressao_3d(Z, V, "Plot 3D Numero de quartos e preço")
 
 #Item H
-#b0, b1, b2 = matUtils.regressao_multipla()
-#tamanho = 1650
-#quartos = 3
-#preco_previsto = b0 + b1 * tamanho + b2 * quartos
-#print(f"Preço previsto para {tamanho} sqft e {quartos} quartos: {preco_previsto:.2f}")
+b0, b1, b2 = matUtils.regressao_multipla()
+tamanho = 1650
+quartos = 4
+preco_previsto = b0 + b1 * tamanho + b2 * quartos
+print(f"Preço previsto para {tamanho} sqft e {quartos} quartos: {preco_previsto:.2f}")
+
+#231916 com 10 quartos
+#293081 com 3 quartos
+#310557 com 1 quarto
+#Isso ocorre pois o coeficiente b2 é negativo, ou seja, quanto mais quartos, menor o preço vai ser
+
 
 #Item i
-print("Preço vindo das libs:", matUtils.regressao_multipla_libs())
-print("Preço vindo do método manual:", matUtils.regressao_multipla())
+#print("Preço vindo das libs:", matUtils.regressao_multipla_libs())
+#print("Preço vindo do método manual:", matUtils.regressao_multipla())

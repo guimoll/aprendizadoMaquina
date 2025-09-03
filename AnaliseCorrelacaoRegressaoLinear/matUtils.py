@@ -54,7 +54,7 @@ def representacao(x: list[float], y: list[float], i) -> None:
     B0, B1 = regressao(x, y)
     print("B0: " + str(B0))
     print("B1: " + str(B1))
-    demo.plot_dataset(x,y, i)
+    graficos.plot_dataset(x,y, i)
     print("--------------------------------------------------")
 
 
