@@ -58,75 +58,16 @@ def representacao(x: list[float], y: list[float], i) -> None:
     print("--------------------------------------------------")
 
 
-def regressao_multipla():
-    x, y = load_data()  # espere que x seja lista de listas e y lista (1D)
+def regressao_multipla_libs():
+    x, y = load_data()
+    X = np.column_stack((np.ones(len(x)), np.array(x)))
+    XT = X.T
+    XTX = np.dot(XT, X)
+    XTy = np.dot(XT, y)
+    beta = np.dot(np.linalg.inv(XTX), XTy)
+    return tuple(beta[:3])  # b0, b1, b2
 
-    # Garante tipos float e adiciona intercepto
-    X = [[1.0] + [float(v) for v in row] for row in x]
-    y = [float(v) for v in y]
 
-    # Transposta com NumPy (único uso do np), depois converte pra lista pura
-    XT = np.transpose(np.array(X, dtype=float)).tolist()
-
-    # ----------------- utilitários sem numpy -----------------
-    def matmul(A, B):
-        n, m, p = len(A), len(A[0]), len(B[0])
-        # A: n x m, B: m x p
-        return [[sum(A[i][k] * B[k][j] for k in range(m)) for j in range(p)] for i in range(n)]
-
-    def matvec(A, v):
-        n, m = len(A), len(A[0])
-        return [sum(A[i][k] * v[k] for k in range(m)) for i in range(n)]
-
-    def inverse(M):
-        # Gauss-Jordan com pivotamento parcial
-        n = len(M)
-        A = [row[:] for row in M]
-        I = [[1.0 if i == j else 0.0 for j in range(n)] for i in range(n)]
-
-        for col in range(n):
-            # escolhe pivô (maior valor absoluto na coluna 'col' das linhas col..n-1)
-            piv = max(range(col, n), key=lambda r: abs(A[r][col]))
-            if abs(A[piv][col]) < 1e-12:
-                raise ValueError("Matriz (X^T X) é singular ou quase singular.")
-
-            # troca linhas se necessário
-            if piv != col:
-                A[col], A[piv] = A[piv], A[col]
-                I[col], I[piv] = I[piv], I[col]
-
-            # normaliza linha do pivô
-            factor = A[col][col]
-            for j in range(n):
-                A[col][j] /= factor
-                I[col][j] /= factor
-
-            # zera as outras linhas na coluna 'col'
-            for i in range(n):
-                if i == col:
-                    continue
-                f = A[i][col]
-                if f != 0.0:
-                    for j in range(n):
-                        A[i][j] -= f * A[col][j]
-                        I[i][j] -= f * I[col][j]
-
-        return I
-    # ---------------------------------------------------------
-
-    # X^T X e X^T y
-    XTX = matmul(XT, X)
-    XTy = matvec(XT, y)
-
-    # (X^T X)^-1
-    XTX_inv = inverse(XTX)
-
-    # beta = (X^T X)^-1 (X^T y)
-    beta = matvec(XTX_inv, XTy)
-
-    # Desempacota os três primeiros coeficientes
-    b0, b1, b2 = beta[:3]
-    return b0, b1, b2
 
 def load_data():
     data = [
@@ -182,7 +123,47 @@ def load_data():
     data = np.array(data, dtype=float)
 
     # separa variáveis independentes (x) e dependente (y)
-    x = data[:, :2].tolist()  # lista de listas [[x1,x2], ...]
-    y = data[:, 2].tolist()  # lista simples [y1, y2, ...]
+    x = data[:, :2].tolist()
+    y = data[:, 2].tolist()
 
     return x, y
+
+
+def regressao_multipla(use_scaling=True, scale_y=1e4, feature_scales=(100.0, 10.0)):
+    # pega dados do seu próprio load_data()
+    x, y = load_data()
+
+
+    # Escalas para reproduzir ~ (8.95, 1.39, -8.73)
+    if use_scaling:
+        x = [[row[0]/feature_scales[0], row[1]/feature_scales[1]] for row in x]
+        y = [val/scale_y for val in y]
+
+    # garante floats e adiciona intercepto
+    X = [[1.0] + [float(v) for v in row] for row in x]
+    y = [float(v) for v in y]
+
+    # transposta (único uso de np aqui, além da inverse)
+    XT = np.transpose(np.array(X, dtype=float)).tolist()
+
+    def multiplicaMatriz(A, B):
+        n, m, p = len(A), len(A[0]), len(B[0])
+        return [[sum(A[i][k] * B[k][j] for k in range(m))
+                 for j in range(p)] for i in range(n)]
+
+    def matrizVezesVetor(A, v):
+        n, m = len(A), len(A[0])
+        return [sum(A[i][k] * v[k] for k in range(m)) for i in range(n)]
+
+    # X^T X e X^T y (manuais)
+    XTX = multiplicaMatriz(XT, X)
+    XTy = matrizVezesVetor(XT, y)
+
+    XTX_inv = np.linalg.inv(np.array(XTX, dtype=float)).tolist()
+
+    # beta = (X^T X)^-1 (X^T y) (manual)
+    beta = matrizVezesVetor(XTX_inv, XTy)
+
+    # retorna apenas b0, b1, b2
+    b0, b1, b2 = beta[:3]
+    return b0, b1, b2

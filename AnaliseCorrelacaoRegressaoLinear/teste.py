@@ -5,6 +5,7 @@
 #o dataset R2 também não é adequado pra regressão linear pois vemos que a dispersão dos dados tem uma curvatura, ou seja, uma reta
 # não representa bem esse conjunto de dados, de forma a não descrever corretamente a tendência desses dados
 import matUtils
+import demo
 
 x1 = matUtils.get_float_array_from_file(r'C:\Users\riley\Downloads\datasetFase1.txt', 'x1')
 y1 = matUtils.get_float_array_from_file(r'C:\Users\riley\Downloads\datasetFase1.txt', 'y1')
@@ -15,3 +16,5 @@ y3 = matUtils.get_float_array_from_file(r'C:\Users\riley\Downloads\datasetFase1.
 
 
 print(matUtils.regressao_multipla())
+b0,b1,b2 = matUtils.regressao_multipla()
+demo.plot_regression_3d(b0,b1,b2)
