@@ -1,7 +1,9 @@
 import csv
 import math
+import os
 
 import numpy as np
+from numpy.ma.extras import polyfit
 
 import graficos
 
@@ -276,3 +278,23 @@ def load_data_quartos_preco():
     Z = data[:, 1].tolist()  # número de quartos
     V = data[:, 2].tolist()  # preço
     return Z, V
+
+
+def load_data_fase3():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    csv_path = os.path.join(base_dir, 'datafase3.csv')
+    data = []
+    with open(csv_path, 'r') as f:
+        for line in f:
+            if line.strip():
+                parts = line.strip().split(',')
+                data.append([float(parts[0]), float(parts[1])])
+
+    data = np.array(data, dtype=float)
+    x = data[:, 0].tolist()  # primeira coluna
+    y = data[:, 1].tolist()  # segunda coluna
+    return x, y
+
+
+def demo_regressaop(x,y,n):
+    return polyfit(x,y,n);
