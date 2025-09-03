@@ -12,13 +12,15 @@ def plot_dataset(x, y, name):
     intercept, slope = matUtils.regressao(x, y)
     line = [slope * xi + intercept for xi in x]
 
-    plt.scatter(x, y, label='Dados')
-    plt.plot(x, line, color='red', label='Regressão')
-    plt.title(f"{name}\nCorrelação: {correlacao:.5f}, Regressão: y={slope:.5f}x+{intercept:.5f}")
-    plt.xlabel("X")
-    plt.ylabel("Y")
-    plt.legend()
-    plt.show()
+    fig = plt.Figure()
+    ax = fig.add_subplot(111)
+    ax.scatter(x, y, label='Dados')
+    ax.plot(x, line, color='red', label='Regressão')
+    ax.set_title(f"{name}\nCorrelação: {correlacao:.5f}, Regressão: y={slope:.5f}x+{intercept:.5f}")
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.legend()
+    return fig
 
 def plot_regression_3d(b0, b1, b2):
     # seus dados
@@ -57,8 +59,6 @@ def plot_regression_3d(b0, b1, b2):
         ),
         legend=dict(y=0.95, x=0.01)
     )
-
-    fig.show()
     return fig
 
 
@@ -105,14 +105,10 @@ def plot_dataset_regressao_3d(x, y, name: str):
         legend=dict(y=0.95, x=0.01),
         margin=dict(l=0, r=0, t=50, b=0)
     )
-
-    # anotação fixa no canto superior (papel), deixando o r explícito na figura
     fig.add_annotation(
         x=0.02, y=0.98, xref="paper", yref="paper",
         text=f"Correlação (r): {r:.5f}",
         showarrow=False,
         font=dict(size=12)
     )
-
-    fig.show()
     return fig
