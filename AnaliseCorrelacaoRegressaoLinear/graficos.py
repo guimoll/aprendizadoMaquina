@@ -21,8 +21,6 @@ def plot_dataset(x, y, name):
     plt.show()
 
 def plot_regression_3d(b0, b1, b2):
-
-
     # seus dados
     x, y = matUtils.load_data()
     x1 = np.array([row[0] for row in x], dtype=float)  # tamanho
@@ -58,6 +56,62 @@ def plot_regression_3d(b0, b1, b2):
             zaxis_title="Preço"
         ),
         legend=dict(y=0.95, x=0.01)
+    )
+
+    fig.show()
+    return fig
+
+
+def plot_dataset_regressao_3d(x, y, name: str):
+    # calcula correlação e regressão linear simples (y = b0 + b1*x)
+    r = matUtils.correlacao(x, y)
+    b0, b1 = matUtils.regressao(x, y)
+
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+
+    # linha de regressão (nos extremos do x)
+    x_lin = np.linspace(x.min(), x.max(), 100)
+    y_hat = b0 + b1 * x_lin
+
+    # pontos (3D com eixo "dummy" para manter padrão 3D)
+    scatter = go.Scatter3d(
+        x=x,
+        y=np.zeros_like(x),    # eixo dummy para visual 3D
+        z=y,
+        mode="markers",
+        name="Dados",
+        marker=dict(size=4, opacity=0.85)
+    )
+
+    # linha da regressão
+    line = go.Scatter3d(
+        x=x_lin,
+        y=np.zeros_like(x_lin),
+        z=y_hat,
+        mode="lines",
+        name=f"Regressão",
+        line=dict(width=5)
+    )
+
+    fig = go.Figure(data=[line, scatter])
+    fig.update_layout(
+        title=f"{name} — r={r:.5f} | y = {b1:.5f}·x + {b0:.5f}",
+        scene=dict(
+            xaxis_title="X",
+            yaxis_title="",       # dummy
+            zaxis_title="Y"
+        ),
+        legend=dict(y=0.95, x=0.01),
+        margin=dict(l=0, r=0, t=50, b=0)
+    )
+
+    # anotação fixa no canto superior (papel), deixando o r explícito na figura
+    fig.add_annotation(
+        x=0.02, y=0.98, xref="paper", yref="paper",
+        text=f"Correlação (r): {r:.5f}",
+        showarrow=False,
+        font=dict(size=12)
     )
 
     fig.show()
