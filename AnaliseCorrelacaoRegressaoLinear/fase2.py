@@ -1,5 +1,6 @@
 import matUtils
 import graficos
+# Guilherme Moll, Gabriel Ramos, Eduardo brandt
 
 
 #=== ANÁLISE ESTATÍSTICA DOS DADOS ===
