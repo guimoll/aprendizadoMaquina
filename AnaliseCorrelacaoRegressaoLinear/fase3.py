@@ -35,7 +35,4 @@ import graficos
 
 #ITEM G
 x,y = matUtils.load_data_fase3()
-bN = matUtils.demo_regressaop(x, y, 2)
-bN_invertida = bN[::-1]
-yHat = matUtils.getYhatManual(x, bN_invertida)
-print("EQM manual:", matUtils.EQM_manual(y, yHat))
+print("EQM manual de varios graus:", matUtils.calcular_eqm_multiplos_graus(x,y,[1,2,3,8]))

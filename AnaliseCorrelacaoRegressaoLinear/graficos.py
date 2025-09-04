@@ -230,3 +230,5 @@ def plot_regression_3d_fase3(x, y, titulo,colorParam, bN):
     )
     fig.show()
     return fig
+
+

@@ -310,3 +310,16 @@ def getYhatManual(x, bN):
     for i, coef in enumerate(bN):
         y_chapeu += coef * (x ** i)   # usa os x originais, não linspace
     return y_chapeu
+
+def calcular_eqm_multiplos_graus(x, y, graus):
+    resultados = {}
+
+    for grau in graus:
+        bN = demo_regressaop(x, y, grau)
+        bN_invertida = bN[::-1]
+        yHat = getYhatManual(x, bN_invertida)
+        eqm = EQM_manual(y, yHat)
+        resultados[grau] = eqm
+        print(f"EQM grau {grau}: {eqm}")
+
+    return resultados
