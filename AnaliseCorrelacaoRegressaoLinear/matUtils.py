@@ -298,3 +298,15 @@ def load_data_fase3():
 
 def demo_regressaop(x,y,n):
     return polyfit(x,y,n);
+
+def EQM_manual(y, yhat):
+    n = len(y)
+    soma = sum((y[i] - yhat[i]) ** 2 for i in range(n))
+    return soma / n
+
+def getYhatManual(x, bN):
+    x = np.asarray(x, dtype=float)
+    y_chapeu = np.zeros_like(x, dtype=float)
+    for i, coef in enumerate(bN):
+        y_chapeu += coef * (x ** i)   # usa os x originais, não linspace
+    return y_chapeu

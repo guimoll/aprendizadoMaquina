@@ -173,11 +173,15 @@ def plot_dataset_regressao_Fase3_itemD(x, y, name: str,b0,b1):
     fig.show()
     return fig
 
-def plot_regression_3d_fase3(x, y, titulo,bN):
+def plot_regression_3d_fase3(x, y, titulo,colorParam, bN):
+    """
+    x, y: listas/arrays 1D (duas colunas sem cabeçalho já carregadas)
+    bN: lista de coeficientes [b0, b1, ..., bN] (intercepto primeiro)
+    """
     x = np.asarray(x, dtype=float)
     y = np.asarray(y, dtype=float)
 
-    # Dispersão 3D (eixo Y dummy = 0 só para manter visual 3D)
+    # Dispersão 3D (eixo Y dummy = 0 para manter padrão 3D)
     scatter = go.Scatter3d(
         x=x,
         y=np.zeros_like(x),
@@ -187,24 +191,38 @@ def plot_regression_3d_fase3(x, y, titulo,bN):
         marker=dict(size=4, opacity=0.85)
     )
 
+    # Curva: y = b0 + b1*x + b2*x^2 + ... + bN*x^N
     x_line = np.linspace(x.min(), x.max(), 400)
-    y_line = b0 + b1*x_line + b2*(x_line**2)
+    y_chapeu = np.zeros_like(x_line, dtype=float)
+    for i, coef in enumerate(bN):
+        y_chapeu += coef * (x_line ** i)
 
     line = go.Scatter3d(
         x=x_line,
         y=np.zeros_like(x_line),
-        z=y_line,
+        z=y_chapeu,
         mode="lines",
-        name="Regressão N=2",
-        line=dict(width=6, color="green")
+        name=f"Regressão N={len(bN)-1}",
+        line=dict(width=6, color=colorParam)
     )
+
+    # Equação bonitinha para o título
+    terms = []
+    for i, coef in enumerate(bN):
+        if i == 0:
+            terms.append(f"{coef:.5f}")
+        elif i == 1:
+            terms.append(f"{coef:.5f}·x")
+        else:
+            terms.append(f"{coef:.5f}·x^{i}")
+    eq_str = " + ".join(terms)
 
     fig = go.Figure(data=[line, scatter])
     fig.update_layout(
-        title=f"{titulo} — y = {b0:.5f} + {b1:.5f}·x + {b2:.5f}·x²",
+        title=f"{titulo} — y = {eq_str}",
         scene=dict(
             xaxis_title="x",
-            yaxis_title="",         # eixo dummy
+            yaxis_title="",
             zaxis_title="y"
         ),
         legend=dict(y=0.95, x=0.01),
