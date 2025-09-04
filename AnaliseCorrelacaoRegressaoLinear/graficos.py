@@ -173,47 +173,42 @@ def plot_dataset_regressao_Fase3_itemD(x, y, name: str,b0,b1):
     fig.show()
     return fig
 
-def plot_regression_3d_itemD(x,y,b0, b1, b2):
-    # seus dados
-    x1 = np.array([row[0] for row in x], dtype=float)
-    x2 = np.array([row[1] for row in x], dtype=float)
-    y  = np.array(y, dtype=float)
+def plot_regression_3d_fase3(x, y, titulo,bN):
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
 
-    # grade para o plano de regressão
-    x1_lin = np.linspace(x1.min(), x1.max(), 30)
-    x2_lin = np.linspace(x2.min(), x2.max(), 30)
-    X1, X2 = np.meshgrid(x1_lin, x2_lin)
-    Yhat = b0 +(b1 * X1) + (b2 * (X2)**2)
-
-    # pontos e plano
+    # Dispersão 3D (eixo Y dummy = 0 só para manter visual 3D)
     scatter = go.Scatter3d(
-        x=x1, y=x2, z=y,
+        x=x,
+        y=np.zeros_like(x),
+        z=y,
         mode="markers",
         name="Dados",
         marker=dict(size=4, opacity=0.85)
     )
-    surface = go.Surface(
-        x=X1, y=X2, z=Yhat,
-        name="Plano de regressão",
-        opacity=0.5,
-        showscale=False
+
+    x_line = np.linspace(x.min(), x.max(), 400)
+    y_line = b0 + b1*x_line + b2*(x_line**2)
+
+    line = go.Scatter3d(
+        x=x_line,
+        y=np.zeros_like(x_line),
+        z=y_line,
+        mode="lines",
+        name="Regressão N=2",
+        line=dict(width=6, color="green")
     )
 
-    fig = go.Figure(data=[surface, scatter])
+    fig = go.Figure(data=[line, scatter])
     fig.update_layout(
-        title="Dispersão 3D + Plano de Regressão",
+        title=f"{titulo} — y = {b0:.5f} + {b1:.5f}·x + {b2:.5f}·x²",
         scene=dict(
-            xaxis_title="Tamanho da casa",
-            yaxis_title="Nº de quartos",
-            zaxis_title="Preço"
+            xaxis_title="x",
+            yaxis_title="",         # eixo dummy
+            zaxis_title="y"
         ),
-        legend=dict(y=0.95, x=0.01)
+        legend=dict(y=0.95, x=0.01),
+        margin=dict(l=0, r=0, t=50, b=0)
     )
-
-    # Regression line (red) along x1, with x2 fixed at its mean
-    x2_mean = np.mean(x2)
-    line_x1 = np.linspace(x1.min(), x1.max(), 100)
-    line_y = b0 + b1 * line_x1 + b2 * x2_mean
-
     fig.show()
     return fig

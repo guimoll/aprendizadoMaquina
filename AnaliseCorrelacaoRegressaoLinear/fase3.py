@@ -19,4 +19,4 @@ import graficos
 x,y = matUtils.load_data_fase3()
 bN = matUtils.demo_regressaop(x, y, 2)
 bN_invertida = bN[::-1]
-graficos.plot_regression_3d_itemD(x,y,bN_invertida[0], bN_invertida[1], bN_invertida[2])
+graficos.plot_regression_3d_fase3(x,y,bN_invertida[0], bN_invertida[1], bN_invertida[2])
