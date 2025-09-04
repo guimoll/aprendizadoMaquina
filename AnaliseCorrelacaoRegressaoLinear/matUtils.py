@@ -1,9 +1,11 @@
 import csv
 import math
 import os
-
+import random
 import numpy as np
 from numpy.ma.extras import polyfit
+from sklearn.metrics import r2_score
+
 
 import graficos
 
@@ -280,7 +282,8 @@ def load_data_quartos_preco():
     return Z, V
 
 
-def load_data_fase3():
+
+def load_data_fase3(splitBool, test_size):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     csv_path = os.path.join(base_dir, 'datafase3.csv')
     data = []
@@ -293,7 +296,24 @@ def load_data_fase3():
     data = np.array(data, dtype=float)
     x = data[:, 0].tolist()  # primeira coluna
     y = data[:, 1].tolist()  # segunda coluna
-    return x, y
+
+    if not splitBool:
+        return x, y
+
+    n = len(x)
+    indices = list(range(n))
+    random.shuffle(indices)
+
+    test_count = max(1, int(n * test_size))  # 10% dos dados
+    test_idx = indices[:test_count]
+    train_idx = indices[test_count:]
+
+    x_treino = [x[i] for i in train_idx]
+    y_treino = [y[i] for i in train_idx]
+    x_teste  = [x[i] for i in test_idx]
+    y_teste  = [y[i] for i in test_idx]
+
+    return x_treino, y_treino, x_teste, y_teste
 
 
 def demo_regressaop(x,y,n):
@@ -308,7 +328,7 @@ def getYhatManual(x, bN):
     x = np.asarray(x, dtype=float)
     y_chapeu = np.zeros_like(x, dtype=float)
     for i, coef in enumerate(bN):
-        y_chapeu += coef * (x ** i)   # usa os x originais, não linspace
+        y_chapeu += coef * (x ** i)
     return y_chapeu
 
 def calcular_eqm_multiplos_graus(x, y, graus):
@@ -323,3 +343,21 @@ def calcular_eqm_multiplos_graus(x, y, graus):
         print(f"EQM grau {grau}: {eqm}")
 
     return resultados
+
+
+def calcular_r2(x_train, y_train, x_test, y_test, bN):
+    def prever(x_vals, bN):
+        y_pred = np.zeros_like(x_vals, dtype=float)
+        for i, coef in enumerate(bN):
+            y_pred += coef * (np.array(x_vals, dtype=float) ** i)
+        return y_pred
+
+    # previsões
+    y_train_pred = prever(x_train, bN)
+    y_test_pred  = prever(x_test, bN)
+
+    # R²
+    r2_train = r2_score(y_train, y_train_pred)
+    r2_test  = r2_score(y_test, y_test_pred)
+
+    return r2_train, r2_test
