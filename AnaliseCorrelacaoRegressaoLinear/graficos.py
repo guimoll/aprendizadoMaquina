@@ -206,7 +206,7 @@ def plot_regression_3d_fase3(x, y, titulo,colorParam, bN):
         line=dict(width=6, color=colorParam)
     )
 
-    # Equação bonitinha para o título
+    # titulo
     terms = []
     for i, coef in enumerate(bN):
         if i == 0:

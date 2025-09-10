@@ -345,7 +345,7 @@ def calcular_eqm_multiplos_graus(x, y, graus):
     return resultados
 
 
-def calcular_r2(x_train, y_train, x_test, y_test, bN):
+def calcular_r2(x_train, y_train, x_test, y_test, bN_train,bn_Test):
     def prever(x_vals, bN):
         y_pred = np.zeros_like(x_vals, dtype=float)
         for i, coef in enumerate(bN):
@@ -353,8 +353,8 @@ def calcular_r2(x_train, y_train, x_test, y_test, bN):
         return y_pred
 
     # previsões
-    y_train_pred = prever(x_train, bN)
-    y_test_pred  = prever(x_test, bN)
+    y_train_pred = prever(x_train, bN_train)
+    y_test_pred  = prever(x_test, bn_Test)
 
     # R²
     r2_train = r2_score(y_train, y_train_pred)
