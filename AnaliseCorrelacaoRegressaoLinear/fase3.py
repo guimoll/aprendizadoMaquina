@@ -53,12 +53,35 @@ graficos.plot_regression_3d_fase3(x_treino, y_treino,"Grafico treinamento n2",'g
 x_treino, y_treino, x_teste, y_teste = matUtils.load_data_fase3(True,0.1)
 bn_train = matUtils.demo_regressaop(x_treino, y_treino, 3)
 bn_invertida_train = bn_train[::-1]
-graficos.plot_regression_3d_fase3(x_treino, y_treino,"Grafico treinamento n8",'black', bn_invertida_train)
+graficos.plot_regression_3d_fase3(x_treino, y_treino,"Grafico treinamento n3",'black', bn_invertida_train)
 
 x_treino, y_treino, x_teste, y_teste = matUtils.load_data_fase3(True,0.1)
 bn_train = matUtils.demo_regressaop(x_treino, y_treino, 8)
 bn_invertida_train = bn_train[::-1]
 graficos.plot_regression_3d_fase3(x_treino, y_treino,"Grafico treinamento n8",'yellow', bn_invertida_train)
+
+
+x_treino, y_treino, x_teste, y_teste = matUtils.load_data_fase3(True,0.1)
+bn_train = matUtils.demo_regressaop(x_teste, y_teste, 1)
+bn_invertida_teste = bn_train[::-1]
+graficos.plot_regression_3d_fase3(x_teste, y_teste, "Grafico teste n1",'red', bn_invertida_teste)
+
+x_treino, y_treino, x_teste, y_teste = matUtils.load_data_fase3(True,0.1)
+bn_train = matUtils.demo_regressaop(x_teste, y_teste, 2)
+bn_invertida_teste = bn_train[::-1]
+graficos.plot_regression_3d_fase3(x_teste, y_teste,"Grafico teste n2",'green', bn_invertida_teste)
+
+x_treino, y_treino, x_teste, y_teste = matUtils.load_data_fase3(True,0.1)
+bn_train = matUtils.demo_regressaop(x_teste, y_teste, 3)
+bn_invertida_teste = bn_train[::-1]
+graficos.plot_regression_3d_fase3(x_teste, y_teste,"Grafico teste n3",'black', bn_invertida_teste)
+
+x_treino, y_treino, x_teste, y_teste = matUtils.load_data_fase3(True,0.1)
+bn_train = matUtils.demo_regressaop(x_teste, y_teste, 8)
+bn_invertida_teste = bn_train[::-1]
+graficos.plot_regression_3d_fase3(x_teste, y_teste,"Grafico teste n8",'yellow', bn_invertida_teste)
+
+
 
 #Item J
 x_treino, y_treino, x_teste, y_teste = matUtils.load_data_fase3(True,0.1)
@@ -84,6 +107,3 @@ print("EQM (teste):", eqm_test)
 print("R² (treino):", r2_train)
 print("R² (teste):", r2_test)
 
-#O modelo explica bem os dados de treino (≈78%), mas cai para ≈53% nos dados de teste, indicando perda de generalização e possível overfitting.
-
-#O modelo mais preciso seria o com o menor coeficiente de erro. TERMINAR ESSE ITEM
