@@ -107,3 +107,5 @@ print("EQM (teste):", eqm_test)
 print("R² (treino):", r2_train)
 print("R² (teste):", r2_test)
 
+#o modelo é mais preciso nos dados de teste, já que apresenta menor erro quadrático médio e
+# maior coeficiente de determinação, indicando boa capacidade de generalização para dados não vistos.
