@@ -32,7 +32,6 @@ def meuKnn(dadosTrain, rotuloTrain, dadosTeste, k, normalizacao=False):
             linhaDistancia.append(dist(exemploTeste, exemploTrain))
         matrizDistancia.append(linhaDistancia)
 
-    # Votação por maioria (mantendo seu uso de mode sem correção extra)
     rotulosPrevistos = []
     for i in range(len(dadosTeste_proc)):
         distancias = matrizDistancia[i]

@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 best_acc = 0
 best_k = 1
-k_92 = 0
+k_92     = 0
 for k in range(1, 49):
     rotuloPrevisto = KNN.np.array(KNN.meuKnn(trainSet, trainLabs, testSet, k, True))
     acuracia = np.sum(rotuloPrevisto == testLabs) / len(testLabs)
@@ -46,3 +46,6 @@ print("Melhor acuracia:", best_acc)
 print("Melhor numero de vizinhos:", best_k)
 print("Acuracia 92% atingida com k =", k_92)
 
+#Rodando com k = 1, a acuracia foi de 0.78
+# Fazendo a normalização, foi possível alcançar 90% de acuracia com 9 vizinhos.
+# Da maneira que a normalização foi implementada, nao conseguimos alcançar 92% de acuracia

@@ -10,20 +10,20 @@ if __name__ == '__main__':
     testRots = mat['testRots'].flatten() #flatten pra ser uma matriz de 1 dimensão
     trainRots = mat['trainRots'].flatten()  # flatten pra ser uma matriz de 1 dimensão
 
-    rotuloPrevisto = np.array(KNN.meuKnn(grupoTrain, trainRots, grupoTest, 10))
-    print("Predicted labels:", rotuloPrevisto)
+    rotuloPrevisto = np.array(KNN.meuKnn(grupoTrain, trainRots, grupoTest, 3))
+    print("labels esperadas:", rotuloPrevisto)
 
     estaCorreto = rotuloPrevisto == testRots
-    print("Correct predictions (boolean array):", estaCorreto)
+    print("Predicoes corretas (boolean array):", estaCorreto)
 
     numCorreto = np.sum(estaCorreto)
-    print("Number of correct predictions:", numCorreto)
+    print("Numero de predicoes corretas:", numCorreto)
 
     totalNum = len(testRots)
-    print("Total number of test samples:", totalNum)
+    print("numero total de testes: ", totalNum)
 
     acuracia = numCorreto / totalNum
-    print("Accuracy:", acuracia)
+    print("acuracia:", acuracia)
 
     KNN.visualizaPontos(grupoTrain, trainRots, 0, 1)
 
@@ -42,5 +42,4 @@ print("Melhor numero de vizinhos:", best_k)
 
 #A acurácia máxima observada foi 0,98 (98%), atingida com k = 3 vizinhos.
 #Isso significa que, de 50 amostras de teste, 49 foram classificadas corretamente.
-
-# Nem sempre é necessário usar todos os atributos; alguns subconjuntos podem atingir desempenho equivalente dependendo da redundância entre as features.
+# Nem sempre é necessário, ou melhor aumentar o numero de de caracteristicas, pois pode acabar ficando redundante. Depende do problema.

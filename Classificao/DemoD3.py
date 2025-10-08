@@ -46,4 +46,7 @@ print("Melhor acuracia:", best_acc)
 print("Melhor numero de vizinhos:", best_k)
 print("Acuracia 92% atingida com k =", k_92)
 
-#FALTA A RESPOSTA
+#Aplicando com o K de 1, a acuracia obtida foi de 62%.
+#Sem a normalizaçao, rodando no loop, a melhor acuracia obtida foi de 94%, com K = 9
+#Como o objetivo da atividade era alcancar acuracica de 92%, foi feito uma validação para
+#verificar qual numero de K que atinge, isso, sendo k = 29.

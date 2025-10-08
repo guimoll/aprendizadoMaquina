@@ -11,19 +11,19 @@ if __name__ == '__main__':
     trainRots = mat['trainRots'].flatten()  # flatten pra ser uma matriz de 1 dimensão
 
     rotuloPrevisto = np.array(KNN.meuKnn(grupoTrain, trainRots, grupoTest, 32, True))
-    print("Predicted labels:", rotuloPrevisto)
+    print("labels esperadas:", rotuloPrevisto)
 
     estaCorreto = rotuloPrevisto == testRots
-    print("Correct predictions (boolean array):", estaCorreto)
+    print("Predicoes corretas (boolean array):", estaCorreto)
 
     numCorreto = np.sum(estaCorreto)
-    print("Number of correct predictions:", numCorreto)
+    print("Numero de predicoes corretas:", numCorreto)
 
     totalNum = len(testRots)
-    print("Total number of test samples:", totalNum)
+    print("numero total de testes: ", totalNum)
 
     acuracia = numCorreto / totalNum
-    print("Accuracy:", acuracia)
+    print("acuracia:", acuracia)
 
     KNN.visualizaPontos(grupoTrain, trainRots, 0, 1)
 
@@ -49,3 +49,4 @@ print("Acuracia 98% atingida com k =", k_98)
 
 
 #A acurácia inicial obtida foi de 78,3%, ao aplicar o mesmo kNN do primeiro experimento diretamente sobre os dados brutos.
+# O resultado melhorou após realizar a normalização dos dados, e também foi feito o loop para selecionar o melhor numero de K
