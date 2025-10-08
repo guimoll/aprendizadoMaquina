@@ -10,16 +10,31 @@ def dist(x,y):
 #Fazer matriz de distancia. Para cada exemplo de teste, calcule a distancia com cada ex. de treinamento e salve
 # na matriz de distancia
 
-def meuKnn(dadosTrain, rotuloTrain, dadosTeste, k):
+def meuKnn(dadosTrain, rotuloTrain, dadosTeste, k, normalizacao=False):
+    # Conversão para numpy
+    dadosTrain_np = np.asarray(dadosTrain, dtype=float)
+    dadosTeste_np = np.asarray(dadosTeste, dtype=float)
+
+    #Normaliza os dados, ajustando-os
+    if normalizacao:
+        mean = np.mean(dadosTrain_np, axis=0, keepdims=True)
+        std  = np.std(dadosTrain_np, axis=0, keepdims=True) + 1e-8
+        dadosTrain_proc = (dadosTrain_np - mean) / std
+        dadosTeste_proc = (dadosTeste_np  - mean) / std
+    else:
+        dadosTrain_proc = dadosTrain_np
+        dadosTeste_proc = dadosTeste_np
+
     matrizDistancia = []
-    for exemploTeste in dadosTeste:
+    for exemploTeste in dadosTeste_proc:
         linhaDistancia = []
-        for exemploTrain in dadosTrain:
+        for exemploTrain in dadosTrain_proc:
             linhaDistancia.append(dist(exemploTeste, exemploTrain))
         matrizDistancia.append(linhaDistancia)
 
+    # Votação por maioria (mantendo seu uso de mode sem correção extra)
     rotulosPrevistos = []
-    for i in range(len(dadosTeste)):
+    for i in range(len(dadosTeste_proc)):
         distancias = matrizDistancia[i]
         indicesKMenores = np.argsort(distancias)[:k]
         rotulosKMenores = [int(rotuloTrain[j]) for j in indicesKMenores]
@@ -43,41 +58,3 @@ def visualizaPontos(dados, rotulos, d1, d2):
     ax.scatter(getDadosRotulo(dados, rotulos, 3, d1), getDadosRotulo(dados, rotulos, 3, d2), c='green', marker='.')
 
     plt.show()
-
-if __name__ == '__main__':
-
-    mat = scipy.loadmat('data/grupoDados1.mat')
-    grupoTest = mat['grupoTest']
-    grupoTrain = mat['grupoTrain']
-    testRots = mat['testRots'].flatten() #flatten pra ser uma matriz de 1 dimensão
-    trainRots = mat['trainRots'].flatten()  # flatten pra ser uma matriz de 1 dimensão
-
-    rotuloPrevisto = np.array(meuKnn(grupoTrain, trainRots, grupoTest, 10))
-    print("Predicted labels:", rotuloPrevisto)
-
-    estaCorreto = rotuloPrevisto == testRots
-    print("Correct predictions (boolean array):", estaCorreto)
-
-    numCorreto = np.sum(estaCorreto)
-    print("Number of correct predictions:", numCorreto)
-
-    totalNum = len(testRots)
-    print("Total number of test samples:", totalNum)
-
-    acuracia = numCorreto / totalNum
-    print("Accuracy:", acuracia)
-
-    visualizaPontos(grupoTrain, trainRots, 0, 1)
-
-
-best_acc = 0
-best_k = 1
-for k in range(1, 49):
-    rotuloPrevisto = np.array(meuKnn(grupoTrain, trainRots, grupoTest, k))
-    acuracia = np.sum(rotuloPrevisto == testRots) / len(testRots)
-    if acuracia > best_acc:
-        best_acc = acuracia
-        best_k = k
-
-print("Melhor acuracia:", best_acc)
-print("Melhor numero de vizinhos:", best_k)
