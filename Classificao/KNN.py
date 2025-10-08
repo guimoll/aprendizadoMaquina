@@ -15,7 +15,7 @@ def meuKnn(dadosTrain, rotuloTrain, dadosTeste, k, normalizacao=False):
     dadosTrain_np = np.asarray(dadosTrain, dtype=float)
     dadosTeste_np = np.asarray(dadosTeste, dtype=float)
 
-    #Normaliza os dados, ajustando-os
+    #Normaliza os dados, ajustando-os / media e desvio padrao
     if normalizacao:
         mean = np.mean(dadosTrain_np, axis=0, keepdims=True)
         std  = np.std(dadosTrain_np, axis=0, keepdims=True) + 1e-8
@@ -33,6 +33,7 @@ def meuKnn(dadosTrain, rotuloTrain, dadosTeste, k, normalizacao=False):
         matrizDistancia.append(linhaDistancia)
 
     rotulosPrevistos = []
+    #percorre para prever o rotulo de cada amostra de teste
     for i in range(len(dadosTeste_proc)):
         distancias = matrizDistancia[i]
         indicesKMenores = np.argsort(distancias)[:k]
