@@ -4,12 +4,13 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.express as px
 from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split
 
 import pickle
 from sklearn.preprocessing import LabelEncoder
 
 
-dataset_risco_credito = pd.read_csv('data/dataset_risco_credito.csv')
+dataset_risco_credito = pd.read_csv('dataset_risco_credito.csv')
 print(dataset_risco_credito)
 
 X_risco_credito = dataset_risco_credito.iloc[:, 0:-1].values  # todas as colunas menos a última
@@ -31,8 +32,22 @@ y_risco_credito_encoded = le_y.fit_transform(y_risco_credito)
 print("X_risco_credito codificado:\n", X_risco_credito_encoded)
 print("y_risco_credito codificado:\n", y_risco_credito_encoded)
 
-#with open('risco_credito.pkl', 'wb') as f:
-#  pickle.dump([X_risco_credito_encoded, y_risco_credito_encoded], f)
+# Certifique-se de que X_risco_credito_encoded tem apenas as 3 primeiras colunas (atributos)
+X_risco_credito_encoded = X_risco_credito_encoded[:, :3]
+
+# y_risco_credito_encoded já é apenas a última coluna (classe)
+
+# Separação em treino e teste conforme solicitado
+X_credit_treinamento, X_credit_teste, y_credit_treinamento, y_credit_teste = train_test_split(
+    X_risco_credito_encoded, y_risco_credito_encoded, test_size=0.25, random_state=0
+)
+
+with open('risco_credito.pkl', 'wb') as f:
+  pickle.dump([X_risco_credito_encoded, y_risco_credito_encoded], f)
+
+
+with open('credit.pkl', 'wb') as f:
+    pickle.dump([X_credit_treinamento, y_credit_treinamento, X_credit_teste, y_credit_teste], f)
 
 naiveb_risco_credito = GaussianNB()
 naiveb_risco_credito.fit(X_risco_credito_encoded, y_risco_credito_encoded)

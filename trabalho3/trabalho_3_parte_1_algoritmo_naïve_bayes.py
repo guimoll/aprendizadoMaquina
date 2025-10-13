@@ -46,7 +46,7 @@ DICA: Veja o que é e como aplicar o Label Enconder em: https://youtu.be/nLKEkBA
 
 # como salvar o arquivo:
 import pickle
-with open('risco_credito.pkl', 'wb') as f:
+with open('credit.pkl', 'wb') as f:
   pickle.dump([X_risco_credito, y_risco_credito], f)
 
 """# 2 - Algoritmo Naïve Bayes"""
