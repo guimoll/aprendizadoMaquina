@@ -32,11 +32,6 @@ y_risco_credito_encoded = le_y.fit_transform(y_risco_credito)
 print("X_risco_credito codificado:\n", X_risco_credito_encoded)
 print("y_risco_credito codificado:\n", y_risco_credito_encoded)
 
-# Certifique-se de que X_risco_credito_encoded tem apenas as 3 primeiras colunas (atributos)
-X_risco_credito_encoded = X_risco_credito_encoded[:, :3]
-
-# y_risco_credito_encoded já é apenas a última coluna (classe)
-
 # Separação em treino e teste conforme solicitado
 X_credit_treinamento, X_credit_teste, y_credit_treinamento, y_credit_teste = train_test_split(
     X_risco_credito_encoded, y_risco_credito_encoded, test_size=0.25, random_state=0
