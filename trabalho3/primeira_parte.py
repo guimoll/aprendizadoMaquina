@@ -32,17 +32,11 @@ y_risco_credito_encoded = le_y.fit_transform(y_risco_credito)
 print("X_risco_credito codificado:\n", X_risco_credito_encoded)
 print("y_risco_credito codificado:\n", y_risco_credito_encoded)
 
-# Separação em treino e teste conforme solicitado
-X_credit_treinamento, X_credit_teste, y_credit_treinamento, y_credit_teste = train_test_split(
-    X_risco_credito_encoded, y_risco_credito_encoded, test_size=0.25, random_state=0
-)
+
 
 with open('risco_credito.pkl', 'wb') as f:
   pickle.dump([X_risco_credito_encoded, y_risco_credito_encoded], f)
 
-
-with open('credit.pkl', 'wb') as f:
-    pickle.dump([X_credit_treinamento, y_credit_treinamento, X_credit_teste, y_credit_teste], f)
 
 naiveb_risco_credito = GaussianNB()
 naiveb_risco_credito.fit(X_risco_credito_encoded, y_risco_credito_encoded)
