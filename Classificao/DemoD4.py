@@ -48,4 +48,4 @@ print("Acuracia 92% atingida com k =", k_92)
 
 #Rodando com k = 1, a acuracia foi de 0.78
 # Fazendo a normalização, foi possível alcançar 90% de acuracia com 9 vizinhos.
-# Da maneira que a normalização foi implementada, nao conseguimos alcançar 92% de acuracia
+# Da maneira que a normalização foi implementada, nao conseguzimos alcançar 92% de acuracia

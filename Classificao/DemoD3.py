@@ -10,7 +10,7 @@ if __name__ == '__main__':
     testRots = mat['testRots'].flatten() #flatten pra ser uma matriz de 1 dimensão
     trainRots = mat['trainRots'].flatten()  # flatten pra ser uma matriz de 1 dimensão
 
-    rotuloPrevisto = np.array(KNN.meuKnn(grupoTrain, trainRots, grupoTest, 29))
+    rotuloPrevisto = np.array(KNN.meuKnn(grupoTrain, trainRots, grupoTest, 9, True))
     print("Predicted labels:", rotuloPrevisto)
 
     estaCorreto = rotuloPrevisto == testRots
