@@ -70,3 +70,4 @@ print('Previsão exemplo ii:', classe2)
 print('Classes utilizadas pelo algoritmo:', le_y.inverse_transform(naiveb_risco_credito.classes_))
 
 print('Contagem de registros em cada classe:', dict(zip(le_y.inverse_transform(naiveb_risco_credito.classes_), naiveb_risco_credito.class_count_)))
+
