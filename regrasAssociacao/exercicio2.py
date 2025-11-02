@@ -14,22 +14,17 @@ def exibir_regras(resultados):
             print(f"  {list(stat.items_base)} → {list(stat.items_add)}")
             print(f"  Confidence: {stat.confidence:.4f}, Lift: {stat.lift:.4f}")
 
-# Carregar a base de dados mercado2
 base_mercado2 = pd.read_csv('mercado2.csv', header=None)
 
-# Preparar transações
 transacoes = []
 for i in range(len(base_mercado2)):
-    # Pegar todos os itens não-nulos de cada linha
     transacao = [str(base_mercado2.values[i, j]) for j in range(len(base_mercado2.columns))
                  if pd.notna(base_mercado2.values[i, j])]
     transacoes.append(transacao)
 
-# Calcular o total de transações
 total_transacoes = len(transacoes)
 print(f"Total de transações: {total_transacoes}")
 
-# Calcular o total de produtos ÚNICOS/DISTINTOS na base de dados
 from collections import Counter
 todos_itens = []
 for transacao in transacoes:
