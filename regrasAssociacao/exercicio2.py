@@ -30,17 +30,72 @@ todos_itens = []
 for transacao in transacoes:
     todos_itens.extend(transacao)
 
-# Produtos únicos/distintos
-produtos_unicos = set(todos_itens)
-total_produtos = len(produtos_unicos)
-print(f"Total de produtos únicos/distintos na base de dados: {total_produtos}")
-
 # a) Produtos vendidos pelo menos 28 vezes por semana (4 vezes/dia * 7 dias)
-# Suporte mínimo = 28 / total_produtos (produtos únicos)
 min_vendas = 28
-min_support = min_vendas / total_produtos
+min_support = min_vendas / total_transacoes
 
 print(f"\nProdutos que aparecem pelo menos {min_vendas} vezes")
 print(f"Suporte mínimo calculado: {min_support:.4f} ({min_support*100:.2f}%)")
-print(f"Fórmula: {min_vendas} / {total_produtos} = {min_support:.4f}")
+print(f"Fórmula: {min_vendas} / {total_transacoes} = {min_support:.4f}")
+
+
+
+regras_a = apriori(
+    transacoes,
+    min_support=min_support,
+    min_confidence=0.01,
+    min_lift=1,
+    min_length=2
+)
+resultados_a = list(regras_a)
+print(f"\n(a) Qtde de registros (RelationRecords) com suporte >= {min_support:.4f}: {len(resultados_a)}")
+
+regras_b = apriori(
+    transacoes,
+    min_support=min_support,
+    min_confidence=0.2,
+    min_lift=3,
+    min_length=2
+)
+resultados_b = list(regras_b)
+print(f"\n(b) Qtde de registros com conf>=0.2 e lift>=3: {len(resultados_b)}")
+
+resultados = resultados_b  # <-- escolhemos visualizar as regras filtradas de (b)
+
+A = []          # lista para armazenar antecedentes (A) de cada regra
+B = []          # lista para armazenar consequentes (B) de cada regra
+suporte = []    # lista para armazenar o suporte do conjunto de itens da regra
+confianca = []  # lista para armazenar a confiança da regra
+lift = []       # lista para armazenar o lift da regra
+
+for resultado in resultados:
+  s = resultado[1]          # suporte do conjunto (RelationRecord.support)
+  result_rules = resultado[2]  # lista de OrderedStatistics (regras A -> B derivadas desse conjunto)
+  for result_rule in result_rules:
+    a = list(result_rule[0])  # antecedente (items_base) convertido em lista
+    b = list(result_rule[1])  # consequente (items_add) convertido em lista
+    c = result_rule[2]        # confiança da regra
+    l = result_rule[3]        # lift da regra
+    A.append(a)               # acumula antecedente
+    B.append(b)               # acumula consequente
+    suporte.append(s)         # acumula suporte (do conjunto de itens)
+    confianca.append(c)       # acumula confiança
+    lift.append(l)            # acumula lift
+
+rules_df = pd.DataFrame({'A': A, 'B': B, 'suporte': suporte, 'confianca': confianca, 'lift': lift})
+print("\n(c) Top 10 regras por lift:")
+print(rules_df.sort_values(by='lift', ascending=False).head(10))
+
+# ===========================
+# (d) Ordene por confiança e mostre a maior confiança
+# ===========================
+rules_conf = rules_df.sort_values(by='confianca', ascending=False)
+print("\n(d) Top 10 regras por confiança:")
+print(rules_conf.head(10))
+
+if not rules_conf.empty:
+    print(f"\n(d) Maior confiança encontrada: {rules_conf['confianca'].iloc[0]:.4f}")
+else:
+    print("\n(d) Nenhuma regra encontrada para os parâmetros definidos.")
+
 
